@@ -4,6 +4,7 @@ import (
     "fmt"
     "net/http"
     "reflect"
+    "os"
 
     "github.com/op/go-logging"
     "github.com/gorilla/websocket"
@@ -11,8 +12,13 @@ import (
 	"github.com/dghubble/oauth1"
 )
 
-// Websocket Upgrade buffer
-var upgrader = websocket.Upgrader {}
+// Websocket Upgrade buffer 
+// Allow any domain can access stream API
+var upgrader = websocket.Upgrader {
+    ReadBufferSize:  1024,
+    WriteBufferSize: 1024,
+    CheckOrigin: func(r *http.Request) bool { return true },
+}
 
 var log = logging.MustGetLogger("Twitter Tweeds Log")
 
@@ -38,13 +44,14 @@ func twitterStream(res http.ResponseWriter, req *http.Request) {
         // Upgrades the http server connection to the websocket protocol 
         conn, _ := upgrader.Upgrade(res, req, nil)
         
-        consumerKey := ""
-    	consumerSecret := ""
-    	accessToken := ""
-    	accessSecret := ""
+        //Get Consumer key/secret and Access token/secret from enviroment variabls
+        consumerKey := os.Getenv("TWITTER_CONSUMER_KEY")
+    	consumerSecret := os.Getenv("TWITTER_CONSUMER_SECRET")
+    	accessToken := os.Getenv("TWITTER_ACCESS_TOKEN")
+    	accessSecret := os.Getenv("TWITTER_ACCESS_SECRET")
     	
         if consumerKey == "" || consumerSecret == "" || accessToken == "" || accessSecret == "" {
-    		log.Error("Consumer key/secret and Access token/secret required")
+    		log.Error("Missing Consumer key/secrets and Access token/secret")
     	}
     
     	config := oauth1.NewConfig(consumerKey, consumerSecret)
