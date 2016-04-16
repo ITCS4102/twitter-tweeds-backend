@@ -199,7 +199,11 @@
                 deleteTweetList(tweet);
                 
                 //Close WebSocket connection
-                mapTweetColumn.get(name).close();
+                setTimeout(
+                function() {
+                    mapTweetColumn.get(name).close();
+                }, 3000);
+                
             });
         }
         
@@ -235,15 +239,10 @@
                 for(var i=0; i<tweet_list.length; i++) {
                     
                     if(tweet_list.length == 1)
-                    {
                         $('#bgText').css("display","flex");
-                    }
                     
                     if(tweet_list[i] == tweet)
-                    {   
-                        // Delete the tweet
-                        tweet_list.splice(i,1);
-                    }
+                        tweet_list.splice(i,1); // Delete the tweet
                 }
             
                 sessionStorage.removeItem("tweet_list");
@@ -254,6 +253,7 @@
         }
         
         $("#btnTweetColumnDialog").click(openTweetColumnDialog);
+        
         $("#addTweetColumn").click(function() {
             tweet = $("#textTweet").val();    
             $("#textTweet").val("");
