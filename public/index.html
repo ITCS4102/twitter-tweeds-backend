@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Twitter Tweeds</title>
@@ -43,7 +43,7 @@
                 display:         flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 200px;
+                font-size: 150px;
                 color: #FFFF00;
             }
             
@@ -121,6 +121,7 @@
         
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
     </body>
     <script>
 
@@ -131,13 +132,20 @@
         var colName = "col";
         var colCount = 1;
 
-        function addTweetColumn() {
-            var tweet = $("#textTweet").val();
-            $("#textTweet").val("");
+        // Add column list if there is sessionStore        
+        if(sessionStorage.getItem("tweet_list")) {
+            var tweet_list = JSON.parse(sessionStorage.getItem("tweet_list"));
+            for (var tweet of tweet_list) {
+                addTweetColumn(tweet);
+            }
+        }
+
+        function addTweetColumn(tweet) {
+        
             if(tweet != "")
             {
                 // Create WebSocket
-                var temp = new WebSocket("ws://twitter-tweeds-back-end-iganbold.c9users.io/twitter/stream?filter="+tweet);
+                var temp = new WebSocket("wss://twitter-tweeds-back-end-iganbold.c9users.io/twitter/stream?filter="+tweet);
             
                 // Name used for elements' id and class, so it becomes easy to update, add or remove dynamic lists and items
                 var tempName = colName+colCount;
@@ -160,11 +168,7 @@
                 
                 // Count is used for html element naming
                 colCount++;
-            } else {
-                var $toastContent = $('<span>O.Ops empty tweet &#x1f615;<br>Please provide tweet word</span>');
-                Materialize.toast($toastContent, 5000);
-            }
-            
+            } 
         }
         
         function appendColumn(name,tweet) {
@@ -184,17 +188,21 @@
             );
             
             // Add Delete Column Listener
-            addDelColmListener(name);
+            addDelColmListener(name,tweet);
         }
         
-        function addDelColmListener(name) {
+        function addDelColmListener(name,tweet) {
             $("#btnDel"+name).click(function() {
                 //Delete Column and spliter
                 $("#list"+name).remove();
                 $("#split"+name).remove(); 
                 
+                deleteTweetList(tweet);
+                
                 //Close WebSocket connection
                 mapTweetColumn.get(name).close();
+                
+                toastShow("<span>Tweet column has deleted</span>");
             });
         }
         
@@ -202,8 +210,73 @@
             $('#modalAddTweetColumn').openModal();
         }
         
+        function toastShow(text) {
+            var $toastContent = $(text);
+            Materialize.toast($toastContent, 5000);            
+        }
+        
+        function saveTweetList(tweet) {
+            var tweet_list;
+            if(sessionStorage.getItem("tweet_list")) {
+                tweet_list = JSON.parse(sessionStorage.getItem("tweet_list"));
+                tweet_list.push(tweet);
+            } else {
+                tweet_list = [];
+                tweet_list.push(tweet);
+            }
+            
+            // Save tweet word to webstorage
+            sessionStorage.setItem("tweet_list",JSON.stringify(tweet_list));
+        }
+        
+        function deleteTweetList(tweet) {
+            console.log(tweet);
+            if(sessionStorage.getItem("tweet_list")) {
+                tweet_list = JSON.parse(sessionStorage.getItem("tweet_list"));
+                
+                for(var i=0; i<tweet_list.length; i++) {
+                    if(tweet_list[i] == tweet)
+                    {
+                        if(i != 0)
+                            tweet_list.splice((i-1),1);
+                        else
+                            tweet_list.splice(i,1);
+                    }
+                }
+            
+                sessionStorage.removeItem("tweet_list");
+                sessionStorage.setItem("tweet_list",JSON.stringify(tweet_list));    
+            }
+        }
+        
         $("#btnTweetColumnDialog").click(openTweetColumnDialog);
-        $("#addTweetColumn").click(addTweetColumn);
+        $("#addTweetColumn").click(function() {
+            tweet = $("#textTweet").val();    
+            $("#textTweet").val("");
+            if(tweet != "")
+            {
+                saveTweetList(tweet);
+                addTweetColumn(tweet);
+            }
+            else {
+                toastShow('<span>O.Ops empty tweet &#x1f615;<br>Please provide tweet word</span>');   
+            }
+        });
+        
+        
+        // Background text animation
+        var bgText = document.querySelector('#bgText');
+        var bouncyEasing = mojs.easing.path('M0,100 C6.50461245,96.8525391 12.6278439,88.3497543 16.6678547,0 C16.6678547,-1.79459817 31.6478577,115.871587 44.1008572,0 C44.1008572,-0.762447191 54.8688736,57.613472 63.0182497,0 C63.0182497,-0.96434046 70.1500549,29.0348701 76.4643231,0 C76.4643231,0 81.9085007,16.5050125 85.8902733,0 C85.8902733,-0.762447191 89.4362183,8.93311024 92.132216,0 C92.132216,-0.156767385 95.0157166,4.59766248 96.918051,0 C96.918051,-0.156767385 98.7040751,1.93815588 100,0');
+        
+        new mojs.Tween({
+          repeat:   0,
+          delay:    2000,
+          duration: 1500,
+          onUpdate: function (progress) {
+            var bounceProgress = bouncyEasing(progress);
+            bgText.style.transform = 'translateY(' + 400*bounceProgress + 'px)';
+          }
+        }).run();
         
     </script>
 </html>
