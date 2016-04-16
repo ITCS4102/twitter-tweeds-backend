@@ -36,13 +36,16 @@ var upgrader = websocket.Upgrader {
     CheckOrigin: func(r *http.Request) bool { return true },
 }
 
+// Store the tweet filter words
 var filters = []string{};
+
+// Store the WebSocket connections
 var conns = make(map[string]*websocket.Conn)
 
 var log = logging.MustGetLogger("Twitter Tweeds Log")
 
+// Twitter stream
 var globalTwitterStream *twitter.Stream
-
 
 // Start the app then Listen and Serve 
 func main() {
@@ -68,11 +71,9 @@ func twitterStream(res http.ResponseWriter, req *http.Request) {
         // Upgrades the http server connection to the websocket protocol 
         conn, _ := upgrader.Upgrade(res, req, nil)
         
-        fmt.Println("CONN:",reflect.TypeOf(conn))
         filters = append(filters,filter[0]);
         conns[filter[0]] = conn;
-        fmt.Println("Filters",filters)
-        fmt.Println("Connections:",conns)
+        printConnsFiltes()
         
         // Stop the twitter stream in order to stream again with new filter
         stopGlobTwitterStream()
@@ -118,6 +119,11 @@ func stopGlobTwitterStream() {
     if globalTwitterStream != nil {
             globalTwitterStream.Stop()
     }
+}
+
+func printConnsFiltes() {
+    fmt.Println("Filters:",filters)
+    fmt.Println("Connections:",conns)
 }
 
 // Read messages from the websocket
