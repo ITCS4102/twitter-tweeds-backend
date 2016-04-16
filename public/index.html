@@ -151,6 +151,7 @@
                 
                 appendColumn(tempName,tweet);
                 
+                var itemCount = 1;
                 // Read from WebSocket and add tweets to list
                 temp.addEventListener("message", function(e){
                     var tempTweet = JSON.parse(e.data);
@@ -160,6 +161,9 @@
                           "<p>"+tempTweet.Tweet+"</p>"+
                         "</li>"
                     );
+                    
+                    updateTweetItemCount("tweetCount"+tempName,itemCount);
+                    itemCount++;
                 });
                 
                 // Add WebSocket to map
@@ -176,6 +180,9 @@
                     "<nav>"+
                         "<div class='nav-wrapper brown darken-1'>"+
                               "<a href='#' class='brand-logo center'>#"+tweet+"</a>"+
+                              "<ul id='nav-mobile' class='left hide-on-med-and-down'>"+
+                                "<li><a id='tweetCount"+name+"'></a></li>"+
+                              "</ul>"+
                               "<ul id='nav-mobile' class='right hide-on-med-and-down'>"+
                                 "<li><a id='btnDel"+name+"' href='#'>delete</a></li>"+
                               "</ul>"+
@@ -205,6 +212,11 @@
                 }, 3000);
                 
             });
+        }
+        
+        function updateTweetItemCount(name,countStr) {
+            var count = parseInt(countStr);
+            document.getElementById(name).innerHTML = count;
         }
         
         function openTweetColumnDialog() {
