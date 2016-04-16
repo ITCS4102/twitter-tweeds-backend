@@ -3,6 +3,7 @@
     <head>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+        <link rel="stylesheet" href="http://www.minimamente.com/example/magic_animations/css/magic.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Twitter Tweeds</title>
         
@@ -13,16 +14,13 @@
             }
         
             .tweet-column {
-                display: inline-block;
                 width: 350px;
                 color: #795548;
             }
             
             .tweet-column-container {
-                display: -webkit-flex;       
-                display:         flex;
-                -webkit-flex-direction: row; 
-                flex-direction:         row;
+                display: -webkit-inline-flex;       
+                display: inline-flex;
             }
             
             .split {
@@ -31,11 +29,11 @@
             
             .vertical-scroll {
                 overflow-y: auto;
-                height: 500px;
+                height: 100vh;
             }
             
             body {
-                background-color: #D7CCC8;    
+                background-color: #D7CCC8;
             }
             
             #bgText {
@@ -121,7 +119,6 @@
         
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
     </body>
     <script>
 
@@ -144,6 +141,8 @@
         
             if(tweet != "")
             {
+                $('#bgText').css("display","none");
+                
                 // Create WebSocket
                 var temp = new WebSocket("wss://twitter-tweeds-back-end-iganbold.c9users.io/twitter/stream?filter="+tweet);
             
@@ -201,8 +200,6 @@
                 
                 //Close WebSocket connection
                 mapTweetColumn.get(name).close();
-                
-                toastShow("<span>Tweet column has deleted</span>");
             });
         }
         
@@ -225,27 +222,34 @@
                 tweet_list.push(tweet);
             }
             
-            // Save tweet word to webstorage
+            // Save tweet word to sessionStorage
             sessionStorage.setItem("tweet_list",JSON.stringify(tweet_list));
         }
         
         function deleteTweetList(tweet) {
-            console.log(tweet);
+
             if(sessionStorage.getItem("tweet_list")) {
                 tweet_list = JSON.parse(sessionStorage.getItem("tweet_list"));
                 
+                // Search the tweet
                 for(var i=0; i<tweet_list.length; i++) {
-                    if(tweet_list[i] == tweet)
+                    
+                    if(tweet_list.length == 1)
                     {
-                        if(i != 0)
-                            tweet_list.splice((i-1),1);
-                        else
-                            tweet_list.splice(i,1);
+                        $('#bgText').css("display","flex");
+                    }
+                    
+                    if(tweet_list[i] == tweet)
+                    {   
+                        // Delete the tweet
+                        tweet_list.splice(i,1);
                     }
                 }
             
                 sessionStorage.removeItem("tweet_list");
                 sessionStorage.setItem("tweet_list",JSON.stringify(tweet_list));    
+            
+                toastShow("<span>"+tweet+" column has deleted</span>");
             }
         }
         
@@ -265,18 +269,13 @@
         
         
         // Background text animation
-        var bgText = document.querySelector('#bgText');
-        var bouncyEasing = mojs.easing.path('M0,100 C6.50461245,96.8525391 12.6278439,88.3497543 16.6678547,0 C16.6678547,-1.79459817 31.6478577,115.871587 44.1008572,0 C44.1008572,-0.762447191 54.8688736,57.613472 63.0182497,0 C63.0182497,-0.96434046 70.1500549,29.0348701 76.4643231,0 C76.4643231,0 81.9085007,16.5050125 85.8902733,0 C85.8902733,-0.762447191 89.4362183,8.93311024 92.132216,0 C92.132216,-0.156767385 95.0157166,4.59766248 96.918051,0 C96.918051,-0.156767385 98.7040751,1.93815588 100,0');
         
-        new mojs.Tween({
-          repeat:   0,
-          delay:    2000,
-          duration: 1500,
-          onUpdate: function (progress) {
-            var bounceProgress = bouncyEasing(progress);
-            bgText.style.transform = 'translateY(' + 400*bounceProgress + 'px)';
-          }
-        }).run();
+        magicAnimate("vanishIn");
         
+        function magicAnimate(animationName) {
+            setTimeout(function(){
+                $('#bgText').addClass('magictime '+animationName);
+            }, 0000);    
+        }
     </script>
 </html>
