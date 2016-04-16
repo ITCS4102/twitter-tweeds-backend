@@ -41,14 +41,15 @@ var conns = make(map[string]*websocket.Conn)
 
 var log = logging.MustGetLogger("Twitter Tweeds Log")
 
-var globalStream *twitter.Stream
+var globalTwitterStream *twitter.Stream
 
 
 // Start the app then Listen and Serve 
 func main() {
+    
     http.HandleFunc("/", home)
     http.HandleFunc("/twitter/stream", twitterStream)
-
+    fmt.Println("TweetDeck started and ready to rock");
     http.ListenAndServe(":8080",nil)
 }
 
@@ -73,9 +74,8 @@ func twitterStream(res http.ResponseWriter, req *http.Request) {
         fmt.Println("Filters",filters)
         fmt.Println("Connections:",conns)
         
-        if globalStream != nil {
-            globalStream.Stop()
-        }
+        // Stop the twitter stream in order to stream again with new filter
+        stopGlobTwitterStream()
     	
     	// Read only tweet from twitter stream
     	demux := twitter.NewSwitchDemux()
@@ -99,7 +99,7 @@ func twitterStream(res http.ResponseWriter, req *http.Request) {
     	
     	stream, err := client.Streams.Filter(filterParams)
     	
-    	globalStream = stream
+    	globalTwitterStream = stream
     	
     	fmt.Println(reflect.TypeOf(stream))
     	if err != nil {
@@ -114,27 +114,32 @@ func twitterStream(res http.ResponseWriter, req *http.Request) {
     }
 }
 
+func stopGlobTwitterStream() {
+    if globalTwitterStream != nil {
+            globalTwitterStream.Stop()
+    }
+}
+
 // Read messages from the websocket
 func wsReader(conn *websocket.Conn,filter string,stream *twitter.Stream) {
     for {
         _, _, err := conn.ReadMessage()
         
-        //Close the websocket connection
+        // Close the websocket connection
         if err != nil {
+            // Close connection
+            conn.Close()
+             // Remove connections from connection list
+            delete(conns, filter)  
             
             for index, value := range filters {
                 if value == filter {
-                    // remove filtered word from filter slice
+                    // Remove filtered word from filter slice
                     filters = append(filters[:index], filters[index+1:]...)
                     break
                 }    
             }
             
-             // Remove connections from connection list
-            delete(conns, filter)      
-            
-            // Close connection
-            conn.Close()
             log.Info("wsReader/WS Connection Closed: "+filter)
             break
         } else {
