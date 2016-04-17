@@ -23,6 +23,8 @@ The app streams the data from Twitter. User can add specific column for each twi
 * Protocols
     * WebSocket Secure
     * HTTPS
+* Authorization
+    * OAuth 1.0A (used for Twitter API)   
     
 ### Heroku Pipeline
 ![alt tag](http://passion-projects.weebly.com/uploads/4/2/6/7/42671647/9046146_orig.png)
