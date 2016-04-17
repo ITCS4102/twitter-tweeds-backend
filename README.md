@@ -6,7 +6,7 @@ The app streams the data from Twitter. User can add specific column for each twi
 
 #####Demo Video: https://www.youtube.com/watch?v=uaiUTC5TwbM
 
-Used
+###Used
 *Langauges: 
 **Go, HTML5, CSS3, JS
 *Libraries:
