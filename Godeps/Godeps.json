@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/iganbold/ITCS4102/twitter-tweeds-backend",
+	"ImportPath": "github.com/iganbold/ITCS4102/twitterTweedsBackend",
 	"GoVersion": "go1.6",
 	"GodepVersion": "v62",
 	"Packages": [
