@@ -1,1 +1,1 @@
-web: websrc
+web: webapp
