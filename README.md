@@ -8,14 +8,21 @@ The app streams the data from Twitter. User can add specific column for each twi
 
 ###Used
 * Langauges: 
-** Go, HTML5, CSS3, JS
+   * Go, HTML5, CSS3, JS
 * Libraries:
-    * github.com/op/go-logging
-    * github.com/gorilla/websocket
-    * github.com/dghubble/go-twitter/twitter
-    * github.com/dghubble/oauth1
+    * GO:  github.com/op/go-logging
+    * GO:  github.com/gorilla/websocket
+    * GO:  github.com/dghubble/go-twitter/twitter
+    * GO:  github.com/dghubble/oauth1
+    * CSS: github.com/miniMAC/magic
+    * JS:  github.com/jquery/jquery
+* Framworks :
+    *  Materialize CSS framework
 * APIs:
     * Twitter Stream API https://dev.twitter.com/streaming/overview
+* Protocols
+    * WebSocket Secure
+    * HTTPS
     
 ### Heroku Pipeline
 ![alt tag](http://passion-projects.weebly.com/uploads/4/2/6/7/42671647/9046146_orig.png)
