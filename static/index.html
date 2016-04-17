@@ -144,7 +144,8 @@
                 $('#bgText').css("display","none");
                 
                 // Create WebSocket
-                var temp = new WebSocket("wss://twitter-tweeds-back-end-iganbold.c9users.io/twitter/stream?filter="+tweet);
+                var temp = new WebSocket("wss://tweetdeck.herokuapp.com/twitter/stream?filter="+tweet);
+                // var temp = new WebSocket("wss://twitter-tweeds-back-end-iganbold.c9users.io/twitter/stream?filter="+tweet);
             
                 // Name used for elements' id and class, so it becomes easy to update, add or remove dynamic lists and items
                 var tempName = colName+colCount;
