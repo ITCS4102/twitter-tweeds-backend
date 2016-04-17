@@ -1,1 +1,1 @@
-web: go run app.go
+go run app.go
