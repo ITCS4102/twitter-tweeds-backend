@@ -1,0 +1,46 @@
+{
+	"ImportPath": "github.com/iganbold/ITCS4102/twitter-tweeds-backend",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v62",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/cenkalti/backoff",
+			"Comment": "v1.0.0",
+			"Rev": "32cd0c5b3aef12c76ed64aaf678f6c79736be7dc"
+		},
+		{
+			"ImportPath": "github.com/dghubble/go-twitter/twitter",
+			"Rev": "6fd9c6878dbbf2022a511f063e618d5a2d168d89"
+		},
+		{
+			"ImportPath": "github.com/dghubble/oauth1",
+			"Comment": "v0.2.0-4-gb976e49",
+			"Rev": "b976e493be28db57be393db34b4fc1a569f0459b"
+		},
+		{
+			"ImportPath": "github.com/dghubble/sling",
+			"Comment": "v1.0-13-g00aa3a3",
+			"Rev": "00aa3a32dcef6cef1c7373a554516cc6970c81ea"
+		},
+		{
+			"ImportPath": "github.com/google/go-querystring/query",
+			"Rev": "9235644dd9e52eeae6fa48efd539fdc351a0af53"
+		},
+		{
+			"ImportPath": "github.com/gorilla/websocket",
+			"Rev": "e2e3d8414d0fbae04004f151979f4e27c6747fe7"
+		},
+		{
+			"ImportPath": "github.com/op/go-logging",
+			"Comment": "v1-7-g970db52",
+			"Rev": "970db520ece77730c7e4724c61121037378659d9"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "589fda73dd0faec3dc59e7d7dab5b069e3fce0f9"
+		}
+	]
+}

@@ -1,0 +1,82 @@
+[1mdiff --git a/src/app.go b/src/app.go[m
+[1mindex 49be2f2..8c2aa40 100644[m
+[1m--- a/src/app.go[m
+[1m+++ b/src/app.go[m
+[36m@@ -1,11 +1,21 @@[m
+ package main[m
+ [m
+ import ([m
+[32m+[m[32m    "fmt"[m
+     "net/http"  [m
+[32m+[m[32m    "time"[m
+[32m+[m
+[32m+[m[32m    "github.com/op/go-logging"[m
+[32m+[m[32m    "github.com/gorilla/websocket"[m
+ )[m
+ [m
+[32m+[m[32mvar upgrader = websocket.Upgrader {}[m
+[32m+[m[32mvar log = logging.MustGetLogger("Twitter Tweeds Log")[m
+[32m+[m
+[32m+[m
+ func main() {[m
+     http.HandleFunc("/", home)[m
+[32m+[m[32m    http.HandleFunc("/twitter/stream", twitterStream)[m
+     [m
+     http.ListenAndServe(":8080",nil)[m
+ }[m
+[36m@@ -14,4 +24,54 @@[m [mfunc home(res http.ResponseWriter, req *http.Request) {[m
+     http.ServeFile(res,req, "../public/index.html")[m
+ }[m
+ [m
+[32m+[m[32mfunc twitterStream(res http.ResponseWriter, req *http.Request) {[m
+[32m+[m[32m    log.Info("WS Twitter Request: ",req.URL.Query())[m
+[32m+[m[32m    filter := req.URL.Query()["filter"][m
+[32m+[m[41m    [m
+[32m+[m[32m    if filter != nil {[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Upgrades the http server connection to the websocket protocol[m[41m [m
+[32m+[m[32m        conn, _ := upgrader.Upgrade(res, req, nil)[m
+[32m+[m[41m        [m
+[32m+[m[32m        go wsReader(conn,filter[0])[m
+[32m+[m[32m        go wsWriter(conn,filter[0])[m
+[32m+[m[41m        [m
+[32m+[m[32m    } else {[m
+[32m+[m[32m        fmt.Fprintf(res, "Warning: Filter param is required to stream the data from Twitter")[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m// Read messages from the websocket[m
+[32m+[m[32mfunc wsReader(conn *websocket.Conn,filter string) {[m
+[32m+[m[32m    for {[m
+[32m+[m[32m        _, _, err := conn.ReadMessage()[m
+[32m+[m[41m        [m
+[32m+[m[32m        //Close the websocket connection[m
+[32m+[m[32m        if err != nil {[m
+[32m+[m[32m            conn.Close()[m
+[32m+[m[32m            log.Info("WS Connection Closed: "+filter)[m
+[32m+[m[32m            // fmt.Println("WS Connection Closed:",filter)[m
+[32m+[m[32m            break[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m            log.Error(err)[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m[41m    [m
+[32m+[m[32m}[m
+[32m+[m[32m// Write messages to the websocket[m
+[32m+[m[32mfunc wsWriter(conn *websocket.Conn,filter string) {[m
+[32m+[m[32m    for {[m
+[32m+[m[32m        ch := time.Tick(5 *time.Second)[m
+[32m+[m[41m        [m
+[32m+[m[32m        for range ch {[m
+[32m+[m[32m            conn.WriteJSON(myStruct{[m
+[32m+[m[32m                Name: filter,[m
+[32m+[m[32m            })[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m[41m    [m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+ [m
+[32m+[m[32mtype myStruct struct {[m
+[32m+[m[32m    Name string[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
