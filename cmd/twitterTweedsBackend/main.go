@@ -51,6 +51,8 @@ var globalTwitterStream *twitter.Stream
 func main() {
     port := os.Getenv("PORT")
     
+    // fmt.Println("PORT: ",port)
+    // fmt.Println(reflect.TypeOf(port))
     if port == "" {
 		log.Fatal("$PORT must be set")
 	}
@@ -58,7 +60,7 @@ func main() {
     http.HandleFunc("/", home)
     http.HandleFunc("/twitter/stream", twitterStream)
     fmt.Println("TweetDeck started and ready to rock");
-    http.ListenAndServe(port,nil)
+    http.ListenAndServe(":"+port,nil)
 }
 
 // Serve home page
