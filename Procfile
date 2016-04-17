@@ -1,1 +1,1 @@
-web: twitter-tweeds-backend
+web: websrc
