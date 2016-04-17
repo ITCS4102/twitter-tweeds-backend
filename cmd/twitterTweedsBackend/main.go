@@ -51,22 +51,17 @@ var globalTwitterStream *twitter.Stream
 func main() {
     port := os.Getenv("PORT")
     
-    // fmt.Println("PORT: ",port)
-    // fmt.Println(reflect.TypeOf(port))
     if port == "" {
 		log.Fatal("$PORT must be set")
 	}
 	
-    http.HandleFunc("/", home)
+	// Serve static files
+	fs := http.FileServer(http.Dir("static"))
+    http.Handle("/", fs)
+    
     http.HandleFunc("/twitter/stream", twitterStream)
     fmt.Println("TweetDeck started and ready to rock");
     http.ListenAndServe(":"+port,nil)
-}
-
-// Serve home page
-func home(res http.ResponseWriter, req *http.Request) {
-    res.Header().Set("Access-Control-Allow-Origin", "*")
-    http.ServeFile(res,req, "./static/index.html")
 }
 
 // Serve Websocket Twitter stream
