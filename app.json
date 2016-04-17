@@ -1,0 +1,33 @@
+{
+  "name": "twitter-tweeds-backend",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "TWITTER_ACCESS_SECRET": {
+      "required": true
+    },
+    "TWITTER_ACCESS_TOKEN": {
+      "required": true
+    },
+    "TWITTER_CONSUMER_KEY": {
+      "required": true
+    },
+    "TWITTER_CONSUMER_SECRET": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/go"
+    }
+  ]
+}
