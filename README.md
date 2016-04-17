@@ -19,7 +19,7 @@ The app streams the data from Twitter. User can add specific column for each twi
 * Framworks :
     *  Materialize CSS framework
 * APIs:
-    * Twitter Stream API https://dev.twitter.com/streaming/overview
+    * Twitter Stream API
 * Protocols
     * WebSocket Secure
     * HTTPS
