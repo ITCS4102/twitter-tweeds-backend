@@ -1,10 +1,11 @@
 # TweedDeck (unofficial)
+* The app streams the data from Twitter. User can add specific column for each twitter data stream.
 
-The app streams the data from Twitter. User can add specific column for each twitter data stream.
-
-#####Demo Live: https://tweetdeck.herokuapp.com/
-
-#####Demo Video: https://www.youtube.com/watch?v=uaiUTC5TwbM
+###Demos
+* Demo Live(PROD): https://tweetdeck.herokuapp.com/
+* Demo Live(QA): https://tweetdeck-qa.herokuapp.com/
+* Demo Live(DEV): https://tweetdeck-dev.herokuapp.com/
+* Demo Video: https://www.youtube.com/watch?v=uaiUTC5TwbM
 
 ###Used
 * Langauges: 
