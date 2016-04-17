@@ -49,11 +49,12 @@ var globalTwitterStream *twitter.Stream
 
 // Start the app then Listen and Serve 
 func main() {
+    port := os.Getenv("PORT")
     
     http.HandleFunc("/", home)
     http.HandleFunc("/twitter/stream", twitterStream)
     fmt.Println("TweetDeck started and ready to rock");
-    http.ListenAndServe(":8080",nil)
+    http.ListenAndServe(port,nil)
 }
 
 // Serve home page
