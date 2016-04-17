@@ -1,1 +1,1 @@
-web: go run ./webapp/webapp.go
+web: webapp
