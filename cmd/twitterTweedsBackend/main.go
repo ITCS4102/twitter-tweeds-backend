@@ -55,6 +55,9 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 	
+	fs := http.FileServer(http.Dir("static"))
+    http.Handle("/", fs)
+    
     http.HandleFunc("/", home)
     http.HandleFunc("/twitter/stream", twitterStream)
     fmt.Println("TweetDeck started and ready to rock");
@@ -63,7 +66,7 @@ func main() {
 
 // Serve home page
 func home(res http.ResponseWriter, req *http.Request) {
-    http.ServeFile(res,req, http.Dir("static"))
+    http.ServeFile(res,req, "./static/index.html")
 }
 
 // Serve Websocket Twitter stream
