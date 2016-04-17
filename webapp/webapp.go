@@ -64,7 +64,7 @@ func main() {
 // Serve home page
 func home(res http.ResponseWriter, req *http.Request) {
     res.Header().Set("Access-Control-Allow-Origin", "*")
-    http.ServeFile(res,req, "../public/index.html")
+    http.ServeFile(res,req, "./public/index.html")
 }
 
 // Serve Websocket Twitter stream
