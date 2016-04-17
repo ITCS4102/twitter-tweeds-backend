@@ -1,4 +1,4 @@
-package twitterTweedsBackend
+package main
 
 import (
     "fmt"
