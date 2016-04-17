@@ -1,4 +1,4 @@
-# twitter-tweeds-backend
+# TweedDeck (unofficial)
 
 The app streams the data from Twitter. User can add specific column for each twitter data stream.
 
