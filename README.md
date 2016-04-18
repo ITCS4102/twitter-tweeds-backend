@@ -25,7 +25,7 @@
     * Travis CI with GitHub (dev, qa, prod)
 * Continuous Delivery (CD) 
     * Heroku Pipeline with GitHub (dev, qa, prod)
-* Framworks :
+* Frameworks :
     *  Materialize CSS framework
 * APIs:
     * Twitter Stream API
