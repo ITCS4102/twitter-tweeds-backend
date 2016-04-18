@@ -168,5 +168,5 @@ type tweetStruct struct {
 }
 
 func HelloTweetDeck() string {
-    return "Hello World"
+    return "Tweet Deck Test"
 }
