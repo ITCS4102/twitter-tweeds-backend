@@ -18,7 +18,7 @@
     * CSS: github.com/miniMAC/magic
     * JS:  github.com/jquery/jquery
 * Dependency tool:
-    * godep: github.com/tools/godep 
+    * GO: github.com/tools/godep 
 * Framworks :
     *  Materialize CSS framework
 * APIs:
