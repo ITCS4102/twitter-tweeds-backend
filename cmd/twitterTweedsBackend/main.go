@@ -166,3 +166,7 @@ func wsWriter(conn *websocket.Conn,filter string) {
 type tweetStruct struct {
     Tweet string
 }
+
+func HelloTweetDeck() string {
+    return "Hello World"
+}
