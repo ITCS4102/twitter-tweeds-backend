@@ -19,6 +19,12 @@
     * JS:  github.com/jquery/jquery
 * Dependency tool:
     * GO: github.com/tools/godep 
+* Hosting
+    * Heroku
+* Continuous Integration (CI)
+    * Travis CI with GitHub (dev, qa, prod)
+* Continuous Delivery (CD) 
+    * Heroku Pipeline with GitHub (dev, qa, prod)
 * Framworks :
     *  Materialize CSS framework
 * APIs:
@@ -28,10 +34,6 @@
     * HTTPS
 * Authorization
     * OAuth 1.0A (used for Twitter API)
-* Hosting
-    * Heroku
-* Continuous delivery (CD) 
-    * Heroku Pipeline with GitHub (dev, qa, prod)  
     
 ### Heroku Pipeline
 ![alt tag](http://passion-projects.weebly.com/uploads/4/2/6/7/42671647/9046146_orig.png)
