@@ -17,6 +17,8 @@
     * GO:  github.com/dghubble/oauth1
     * CSS: github.com/miniMAC/magic
     * JS:  github.com/jquery/jquery
+* Dependency tool:
+    * GO: github.com/tools/godep 
 * Framworks :
     *  Materialize CSS framework
 * APIs:
